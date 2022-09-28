@@ -1,5 +1,6 @@
 //connecting to express.router
 const router = require("express").Router();
+const fs = require('fs');
 //connecting to the data that we are using for the api
 const store = require('../db/db.json');
 //connects to the node module to create a unique id for each note
@@ -19,8 +20,12 @@ router.post('/notes', ({body}, res)=> {
     })
 });
 //this deletes a note using its unique id
-router.delete('/notes/:id', (req, res)=>{
-    res.send("delete request called")
+router.delete('/notes/:id', (req, res)=> {
+    let db = JSON.parse(fs.readFileSync('./db/db.json'))
+    let deleteNotes = db.filter(item => item.id !== req.params.id);
+    fs.writeFileSync('./db/db.json', JSON.stringify(deleteNotes));
+    res.json(deleteNotes);
+
 });
 
 module.exports = router;
