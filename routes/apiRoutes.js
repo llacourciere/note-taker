@@ -8,7 +8,7 @@ const { writeFile } = require('fs');
 
 //this is getting the data from db.json
 router.get('/notes', (req,res)=> res.json(store));
-//this is enables the save button to work using the post method
+//this enables the save button to work using the post method
 router.post('/notes', ({body}, res)=> {
     body.id = uuidv4();
 
@@ -19,8 +19,8 @@ router.post('/notes', ({body}, res)=> {
     })
 });
 //this deletes a note using its unique id
-router.delete('/notes', ({body}, res)=>{
-    
+router.delete('/notes/:id', (req, res)=>{
+    res.send("delete request called")
 });
 
 module.exports = router;
