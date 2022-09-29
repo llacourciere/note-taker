@@ -1,6 +1,7 @@
 //connecting to express.router
 const router = require("express").Router();
 const fs = require('fs');
+const path = require('path');
 //connecting to the data that we are using for the api
 const store = require('../db/db.json');
 //connects to the node module to create a unique id for each note
@@ -22,12 +23,15 @@ router.post('/notes', ({body}, res)=> {
 //this deletes a note using its unique id
 router.delete('/notes/:id', (req, res)=> {
     //reading notes from db.json
-    let db = JSON.parse(fs.readFileSync('./db/db.json'))
+    let db = JSON.parse(fs.readFileSync(path.join(__dirname,'../db/db.json')))
     //remove the note with the id being targeted
     let deleteNotes = db.filter(item => item.id !== req.params.id);
-    //rewriting notes to json
-    fs.writeFileSync('./db/db.json', JSON.stringify(deleteNotes));
-    res.json(deleteNotes);
+
+    let item = db.filter(item=> item.id === req.params.id);
+    console.log(item);
+   //rewriting notes to jso
+    fs.writeFileSync(path.join(__dirname,'../db/db.json'), JSON.stringify(deleteNotes));
+    res.json(item[0]);
 
 });
 
